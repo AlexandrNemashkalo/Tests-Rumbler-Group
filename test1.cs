@@ -1,4 +1,4 @@
-//Задание 1
+//1. Объясни смысл следующего кода:
 public sealed class Cinema
 {
     private static volatile Cinema _cinema;
