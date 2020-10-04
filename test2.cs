@@ -1,4 +1,4 @@
-//Задание 2
+//2. Как можно оптимизировать следующий код:
 var movies = Enumerable.Range(0, 10000)
 	.Select(i => new Movie {Id = i, Title = $"Movie{i}"})
 	.ToList();
