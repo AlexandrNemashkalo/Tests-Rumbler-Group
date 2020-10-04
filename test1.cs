@@ -1,3 +1,4 @@
+//Задание 1
 public sealed class Cinema
 {
     private static volatile Cinema _cinema;
