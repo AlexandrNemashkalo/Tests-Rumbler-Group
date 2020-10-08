@@ -69,7 +69,6 @@ namespace RamblerTest
     {
         static void Main(string[] args)
         {
-
             FileService.Process("D:/test.htm");
         }
     }
