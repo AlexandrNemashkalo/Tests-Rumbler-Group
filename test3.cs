@@ -75,7 +75,7 @@ public static class FileService
              case ".htm":
                  ProcessHtmlCode(text);
                  break;
-             сase ".txt":
+             case ".txt":
                  ProcessRawText(text);
                  break;
              default:
