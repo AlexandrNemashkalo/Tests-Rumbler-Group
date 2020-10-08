@@ -1,4 +1,5 @@
 //2. Как можно оптимизировать следующий код:
+//. Как можно уменьшить сложность с O(n^2) до O(n)? 
 var movies = Enumerable.Range(0, 10000)
 	.Select(i => new Movie {Id = i, Title = $"Movie{i}"})
 	.ToList();
