@@ -15,7 +15,7 @@ foreach (var session in sessions)
     	{
         	public int Id { get; set; }
         	public int MovieId { get; set; }
-        	Public string MovieTitle { get; set; }
+        	public string MovieTitle { get; set; }
     	}
 	class Movie
     	{
