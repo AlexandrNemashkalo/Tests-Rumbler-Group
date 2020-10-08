@@ -80,8 +80,7 @@ namespace RamblerTest
 
     public static  class FileService
     {
-
-        private static IFileProcessor[] processors;
+        private static readonly IFileProcessor[] processors;
         
         static FileService()
         {
