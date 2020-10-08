@@ -62,41 +62,96 @@ public class FileService
 6.Здесь можно обойтись и без enum.
 */
 //Решение:
-public static class FileService
-{     
-    public  static void Process(string filePath)
-    {
-         FileInfo fileInf = new FileInfo(filePath);
-         var streamReader = new StreamReader(File.OpenRead(filePath));
-         var text = streamReader.ReadToEnd();
+using System;
+using System.IO;
 
-         switch (fileInf.Extension)
-         {
-             case ".htm":
-                 ProcessHtmlCode(text);
-                 break;
-             case ".txt":
-                 ProcessRawText(text);
-                 break;
-             default:
-                 throw new Exception("Unknown file format");
-	 }
-         streamReader.Close();
+
+namespace RamblerTest
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            FileService.Process("D:/test.htm");
+        }
     }
 
-    private static void ProcessHtmlCode(string content)
+
+    public static  class FileService
     {
-        Console.WriteLine("Обработан Html файл");
+
+        private static IFileProcessor[] processors;
+        
+        static FileService()
+        {
+            processors = new[] {   
+                new ProcessText() ,
+                new ProcessHtml() as IFileProcessor
+            };
+        }
+
+        public static void Process(string filePath)
+        {
+            bool flag = false;
+            foreach (IFileProcessor fileProcessor in processors)
+            {
+                if (fileProcessor.CatchMatch(filePath))
+                {
+                    fileProcessor.ProcessFile(filePath);
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag)
+                Console.WriteLine("Неизвестный формат файла");
+        }
     }
 
-    private static void ProcessRawText(string content)
+
+    public  interface IFileProcessor
     {
-        Console.WriteLine("Обработан Txt файл");
+        public bool CatchMatch(string path);
+        public void ProcessFile(string path);
+    }
+
+
+    public class ProcessHtml : IFileProcessor
+    {
+        public bool CatchMatch(string filePath)
+        {
+            FileInfo fileInf = new FileInfo(filePath);      
+            if(fileInf.Extension == ".htm")  
+                return true;    
+            return false;
+        }
+
+        public void ProcessFile(string filePath)
+        {
+            var streamReader = new StreamReader(File.OpenRead(filePath));
+            var text = streamReader.ReadToEnd();
+            ///...
+            Console.WriteLine("Обработан Html файл");
+        }
+    }
+
+    public class ProcessText : IFileProcessor
+    {
+        public bool CatchMatch(string filePath)
+        {
+            FileInfo fileInf = new FileInfo(filePath);
+            if (fileInf.Extension == ".txt")
+                return true;
+            return false;
+        }
+
+        public void ProcessFile(string filePath)
+        {
+            var streamReader = new StreamReader(File.OpenRead(filePath));
+            var text = streamReader.ReadToEnd();
+            ///...
+            Console.WriteLine("Обработан TXT файл");
+        }
     }
 }
 
-/*возможное Решение:
-
-(Идея пришла в голову 4 октября 23:50 )В данном случаее стоит использовать Фабричный метод,  который определяет интерфейс для создания объектов некоторого класса, 
-но непосредственное решение о том, объект какого класса создавать происходит в подклассах. То есть данный паттерн предполагает,
-что базовый класс делегирует создание объектов классам-наследникам.*/
